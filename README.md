@@ -1,0 +1,2 @@
+# mapx
+Golang Map toolkit
