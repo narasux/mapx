@@ -1,12 +1,12 @@
 # mapx
 
-[中文](./README_ZH.md)
+[English](./README.md)
 
-> mapx is a Golang map utility package that includes some common map usage shortcuts.
+> mapx 是一个 Golang 的 map 工具包，包含一些常见的 map 使用快捷方法。
 
 ## Usage
 
-You can use the mapx package in the following way:
+你可以通过以下方式使用 mapx 包：
 
 ```go
 import "github.com/narasux/mapx"
@@ -14,28 +14,28 @@ import "github.com/narasux/mapx"
 
 ## Spec
 
-### Exists
+### ExistsKey
 
-Check if the key exists in the map.
+判断 key 是否存在于 map 中。
 
 ```go
 m := map[string]any{"k1": "v1"}
 
 // true
-mapx.Exists(m, "k1")
+mapx.ExistsKey(m, "k1")
 
 // false
-mapx.Exists(m, "k2")
+mapx.ExistsKey(m, "k2")
 ```
 
 ### Differ
 
-Compare two maps and output the differences, supporting nested item comparison.
+对两个 map 进行对比，输出差异项，支持比较子项。
 
-**NOTE**
-- Nested item comparison is only supported for `[]any` and `map[string]any`.
-- If a key contains `.`, parentheses will be added in the output (e.g. `[]string{"k1", "k2.2", "k3"} → "k1.(k2.2).k3"`)
-- For complete test cases, see [differ_test.go](./differ_test.go)
+**备注**
+- 子项比较只支持 `[]any`, `map[string]any`
+- 若某个 key 包含 `.` 则输出结果中会包含小括号，如 `[]string{"k1", "k2.2", "k3"} -> "k1.(k2.2).k3"`
+- 更多样例参考 [differ_test.go](./differ_test.go)
 
 ```go
 o := map[string]any{
@@ -77,7 +77,7 @@ for _, r := range diffRets {
 
 ### GetItems
 
-A method to get the value from the nested `map[string]any` according to the specified path.
+根据指定路径从嵌套的 `map[string]any` 获取 value 的方法。
 
 ```go
 m := map[string]any{
@@ -95,20 +95,18 @@ m := map[string]any{
 // d1val: v1
 d1Val, _ := mapx.GetItems(m, "a1.b1.c1.d1")
 
-// if any key contains `.` in path, you can use []string as parameter
+// 路径中某 key 存在 `.`，可使用 []string 作为参数
 // dDot3Val: 3
 dDot3Val, _ := mapx.GetItems(m, []string{"a1", "b1", "c1", "d.3"})
 
-// any key not exist or intermediate value not map[string]any type, return error
+// key 不存在或某中间值类型非 map[string]any，返回错误
 // err: key c2 not exist
 _, err := mapx.GetItems(m, "a1.b1.c2")
 ```
 
 ### Get
 
-A shortcut method for `GetItems` that supports setting a default value. 
-
-When the original `GetItems` returns an error (`err != nil`), this shortcut returns the default value.
+`GetItems` 的快捷方法，支持设置默认值，当 `GetItems` 返回的 `err != nil` 时，返回默认值。
 
 ```go
 m := ...
@@ -122,27 +120,27 @@ c2Val := mapx.GetItems(m, "a1.b1.c2", "default")
 
 ### GetBool
 
-A shortcut method for `Get`, with a default return value of `false`.
+`Get` 的快捷方法，默认返回值为 `false`
 
 ### GetInt64
 
-A shortcut method for `Get`, with a default return value of `int64(0)`.
+`Get` 的快捷方法，默认返回值为 `int64(0)`
 
 ### GetStr
 
-A shortcut method for `Get`, with a default return value of `""` (empty string).
+`Get` 的快捷方法，默认返回值为 `""`
 
 ### GetList
 
-A shortcut method for `Get`, with a default return value of `[]any{}` (empty list).
+`Get` 的快捷方法，默认返回值为 `[]any{}`
 
 ### GetMap
 
-A shortcut method for `Get`, with a default return value of `map[string]any{}` (empty map).
+`Get` 的快捷方法，默认返回值为 `map[string]any{}`
 
 ### SetItems
 
-A method to set values for nested `map[string]any` structures by specifying a path.
+根据指定路径向嵌套的 `map[string]any` 设置 value 的方法。
 
 ```go
 m := map[string]any{
@@ -169,8 +167,7 @@ m := map[string]any{
  */
 _ = mapx.SetItems(m, "a1.b1.c2", "d4")
 
-// error will be returned when an intermediate value does not exist 
-// or its value is not map[string]any
+// 当某中间值不存在或其值非 `map[string]any`，返回错误
 // err: key c1 not exists or obj[key] not map[string]any type
 err := mapx.SetItems(m, "a1.b1.c1.d1", "d5")
 ```
