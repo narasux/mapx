@@ -126,6 +126,10 @@ c2Val := mapx.GetItems(m, "a1.b1.c2", "default")
 
 `Get` 的快捷方法，默认返回值为 `int64(0)`
 
+### GetFloat64
+
+`Get` 的快捷方法，默认返回值为 `float64(0)`
+
 ### GetStr
 
 `Get` 的快捷方法，默认返回值为 `""`

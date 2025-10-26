@@ -49,25 +49,48 @@ func Get(obj map[string]any, paths any, defVal any) any {
 
 // GetBool is Get for bool type, default value is false
 func GetBool(obj map[string]any, paths any) bool {
-	return Get(obj, paths, false).(bool)
+	if r, ok := Get(obj, paths, false).(bool); ok {
+		return r
+	}
+	return false
 }
 
 // GetInt64 is Get for int64 type, default value is int64(0)
 func GetInt64(obj map[string]any, paths any) int64 {
-	return Get(obj, paths, int64(0)).(int64)
+	if r, ok := Get(obj, paths, 0).(int64); ok {
+		return r
+	}
+	return 0
+}
+
+// GetFloat64 is Get for float64 type, default value is float64(0)
+func GetFloat64(obj map[string]any, paths any) float64 {
+	if r, ok := Get(obj, paths, 0).(float64); ok {
+		return r
+	}
+	return 0
 }
 
 // GetStr is Get for string type, default value is ""
 func GetStr(obj map[string]any, paths any) string {
-	return Get(obj, paths, "").(string)
+	if r, ok := Get(obj, paths, "").(string); ok {
+		return r
+	}
+	return ""
 }
 
 // GetList is Get for []any type, default value is []any{}
 func GetList(obj map[string]any, paths any) []any {
-	return Get(obj, paths, []any{}).([]any)
+	if r, ok := Get(obj, paths, nil).([]any); ok {
+		return r
+	}
+	return nil
 }
 
 // GetMap is Get for map[string]any type, default value is map[string]any{}
 func GetMap(obj map[string]any, paths any) map[string]any {
-	return Get(obj, paths, map[string]any{}).(map[string]any)
+	if r, ok := Get(obj, paths, nil).(map[string]any); ok {
+		return r
+	}
+	return nil
 }

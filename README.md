@@ -128,6 +128,10 @@ A shortcut method for `Get`, with a default return value of `false`.
 
 A shortcut method for `Get`, with a default return value of `int64(0)`.
 
+### GetFloat64
+
+A shortcut method for `Get`, with a default return value of `float64(0)`.
+
 ### GetStr
 
 A shortcut method for `Get`, with a default return value of `""` (empty string).

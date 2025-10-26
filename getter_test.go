@@ -30,6 +30,7 @@ var deploySpec = map[string]any{
 		"metadata": map[string]any{
 			"creationTimestamp": nil,
 			"int64Key4GetInt64": int64(10),
+			"floatKey4GetFloat": 3.14,
 			"labels": map[string]any{
 				"app":           "nginx",
 				"strKey4GetStr": "value",
@@ -154,6 +155,11 @@ func TestGetInt64(t *testing.T) {
 	assert.Equal(t, int64(0), mapx.GetInt64(deploySpec, "template.spec.notExistsKey"))
 }
 
+func TestGetFloat64(t *testing.T) {
+	assert.Equal(t, float64(3.14), mapx.GetFloat64(deploySpec, "template.metadata.floatKey4GetFloat"))
+	assert.Equal(t, float64(0), mapx.GetFloat64(deploySpec, "template.spec.notExistsKey"))
+}
+
 func TestGetStr(t *testing.T) {
 	assert.Equal(t, "value", mapx.GetStr(deploySpec, "template.metadata.labels.strKey4GetStr"))
 	assert.Equal(t, "default-scheduler", mapx.GetStr(deploySpec, "template.spec.schedulerName"))
@@ -165,10 +171,14 @@ func TestGetList(t *testing.T) {
 		t, []any{map[string]any{"key": "value"}, "key-value"},
 		mapx.GetList(deploySpec, "template.interfaceList"),
 	)
-	assert.Equal(t, []any{}, mapx.GetList(deploySpec, "template.spec.notExistsKey"))
+
+	var emptyList []any
+	assert.Equal(t, emptyList, mapx.GetList(deploySpec, "template.spec.notExistsKey"))
 }
 
 func TestGetMap(t *testing.T) {
 	assert.Equal(t, map[string]any{"app": "nginx"}, mapx.GetMap(deploySpec, "selector.matchLabels"))
-	assert.Equal(t, map[string]any{}, mapx.GetMap(deploySpec, "template.spec.notExistsKey"))
+
+	var emptyMap map[string]any
+	assert.Equal(t, emptyMap, mapx.GetMap(deploySpec, "template.spec.notExistsKey"))
 }
